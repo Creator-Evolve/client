@@ -18,7 +18,6 @@ const Page = ({ }) => {
     useEffect(() => {
         if (access_token) {
             const decodedData = jwtDecode(access_token)
-            console.log({ decodedData,access_token })
 
             delete decodedData?.sub
             dispatch(setUser({ ...decodedData, access_token }))

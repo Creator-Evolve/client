@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ThreeDots } from "react-loader-spinner"; // Default loader component
+import { TailSpin, ThreeCircles, ThreeDots } from "react-loader-spinner"; // Default loader component
 
 import { cn } from "@/lib/utils";
 
@@ -41,11 +41,12 @@ export interface LoadingProps {
   width?: number;
   height?: number;
   customLoader?: React.ReactNode;
+  loader?: "three-dots" | "three-cicles" | "tailspin"
 }
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: LoadingProps;
 }
@@ -64,25 +65,63 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
+
+    const renderLoader = (loader: string, height: number, width: number, color: string, size: number) => {
+      switch (loader) {
+        case "three-dots":
+          return <ThreeDots
+            visible={true}
+            height={height}
+            width={width}
+            color={color}
+            radius={size} // Adjusted to keep the same ratio as default
+            ariaLabel="three-dots-loading"
+          />
+        case "three-cicles":
+          return <ThreeCircles
+            visible={true}
+            height={height}
+            width={width}
+            color={color}
+            ariaLabel="three-circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        case "tailspin":
+          return <TailSpin
+            visible={true}
+            height={height}
+            width={width}
+            color={color}
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+
+        default:
+          return <ThreeDots
+            visible={true}
+            height={height}
+            width={width}
+            color={color}
+            radius={size} // Adjusted to keep the same ratio as default
+            ariaLabel="three-dots-loading"
+          />
+      }
+
+    }
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       >
+
         {loading?.isLoading ? (
           loading.customLoader ? (
             loading.customLoader
-          ) : (
-            <ThreeDots
-              visible={true}
-              height={loading.height ?? 40}
-              width={loading.width ?? 40}
-              color={loading.color ?? "white"}
-              radius={(loading.size ?? 40) / 4.44} // Adjusted to keep the same ratio as default
-              ariaLabel="three-dots-loading"
-            />
-          )
+          ) : renderLoader(loading.loader || "three-dots", loading.height ?? 40, loading.width ?? 40, loading.color ?? "white", (loading.size ?? 40) / 4.44)
         ) : (
           children
         )}

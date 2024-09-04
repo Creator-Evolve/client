@@ -28,7 +28,6 @@ const Setting = () => {
     };
 
     const onSubmit = (data: any) => {
-        console.log(data);
         // Handle form submission
     };
 

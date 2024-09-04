@@ -292,9 +292,7 @@ const ChatBox: React.FC<IProps> = ({ id, chat, refetch, setDocumentText, documen
                                         </div>
                                     </DialogClose>
                                 </DialogHeader>
-
                                 <ImageViewer selectedIndex={selecteMediaIndex} images={message.images} />
-
                                 <DialogFooter className="sm:justify-start">
                                 </DialogFooter>
                             </DialogContent>

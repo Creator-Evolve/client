@@ -90,11 +90,11 @@ const VoiceDub = ({ refetch }: { refetch: () => {} }) => {
                 const formData = new FormData()
                 if (media.media_type === "audio") {
                     formData.append("audio", media.data)
-                    response = await uploadAudioFileApi({ body: formData }).unwrap()
+                    response = await uploadAudioFileApi(formData).unwrap()
                     setMedia({ id: response.data._id, url: response.data.url, type: "audio" })
                 } else {
                     formData.append("video", media.data)
-                    response = await uploadVideoFileApi({ body: formData }).unwrap()
+                    response = await uploadVideoFileApi(formData).unwrap()
                     setMedia({ id: response.data._id, url: response.data.url, type: "video" })
                 }
             }

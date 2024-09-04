@@ -80,10 +80,10 @@ const InstantCloneForm: React.FC<InstantCloneFormProps> = ({ setIsFormDialogOpen
             formData.append("file", file);
 
             const response = await fileUploadApi(formData).unwrap();
-            const url = response.data as string
+            const url = response.data.url
             setUploadedFiles(prev => [...prev, { name: file.name, url, size: file.size }]);
 
-            append({ url: response.data });
+            append({ url: response.data.url });
         } catch (error) {
             console.log("error");
         }

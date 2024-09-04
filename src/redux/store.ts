@@ -15,6 +15,7 @@ import { thunk } from "redux-thunk";
 import { mediaApi } from "./api/media";
 import { appApi } from "./api/app";
 import { researchApi } from "./api/research";
+import { imageApi } from "./api/image";
 
 const rootReducer = combineReducers({
   user: userSlice,
@@ -22,12 +23,21 @@ const rootReducer = combineReducers({
   [mediaApi.reducerPath]: mediaApi.reducer,
   [appApi.reducerPath]: appApi.reducer,
   [researchApi.reducerPath]: researchApi.reducer,
+  [imageApi.reducerPath]: imageApi.reducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: [
+    authApi.reducerPath,
+    mediaApi.reducerPath,
+    appApi.reducerPath,
+    researchApi.reducerPath,
+    imageApi.reducerPath
+  ],
 };
+
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -45,7 +55,8 @@ export const makeStore = () =>
         .concat(authApi.middleware)
         .concat(mediaApi.middleware)
         .concat(appApi.middleware)
-        .concat(researchApi.middleware),
+        .concat(researchApi.middleware)
+        .concat(imageApi.middleware),
   });
 
 // Infer the type of makeStore

@@ -9,9 +9,9 @@ import {
     Microscope,
     Film,
     AudioLines,
-    Image as ImageIcon,
     Settings,
 } from "lucide-react";
+import { FaYoutube } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 interface NavItem {
     href: string;
-    icon: LucideIcon;
+    icon: any;
     label: string;
     badge?: number;
     active?: boolean;
@@ -37,7 +37,7 @@ const NAV_ITEMS: NavItem[] = [
     { href: APP_ROUTES.REEL_GENERATOR, icon: Film, label: "Short/Reel Generator" },
     { href: APP_ROUTES.VOICE, icon: AudioLines, label: "Voice" },
     { href: APP_ROUTES.RESEARCH_WIZARD, icon: Microscope, label: "Research Wizard" },
-    { href: APP_ROUTES.THUMBNAIL, icon: ImageIcon, label: "Thumbnail" },
+    { href: APP_ROUTES.YOUTUBE_OPTIMIZER, icon: FaYoutube, label: "Youtube Optimizer" },
     { href: APP_ROUTES.SETTING, icon: Settings, label: "Setting" },
 ];
 
@@ -55,10 +55,10 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({ href, icon: Icon, label
         href={href}
         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${active ? "bg-muted text-primary" : "text-muted-foreground hover:text-primary"} ${collapsed ? "justify-center" : ""}`}
     >
-        <Icon className="h-4 w-4" />
+        <Icon className="h-4 w-4 flex-shrink-0" />
         {!collapsed && (
             <>
-                <p className="text-sm">{label}</p>
+                <p className="text-sm flex-shrink-0">{label}</p>
                 {badge && (
                     <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                         {badge}
@@ -123,14 +123,14 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
                         )}
                     </div>
                     <div className="flex-1 overflow-auto">
-                        <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                        <nav className="grid items-start px-2 text-sm font-medium lg:px-4 overflow-hidden">
                             {NAV_ITEMS.map((navItem, index) => (
                                 <NavigationLink key={index} {...navItem} active={pathname.includes(navItem.href)} collapsed={collapsed} />
                             ))}
                         </nav>
                     </div>
                     <div className="mt-auto p-4 border-t ">
-                        <div className="flex">
+                        <div className="flex ">
                             <Avatar className={`${collapsed ? "w-12 h-12" : "w-16 h-16"} mr-4`}>
                                 <AvatarImage src="https://github.com/shadcn.png" />
                                 <AvatarFallback>CN</AvatarFallback>
