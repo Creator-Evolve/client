@@ -13,7 +13,6 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { ThreeCircles } from 'react-loader-spinner'
 import Link from 'next/link'
 import { APP_ROUTES } from '@/constants/routes'
 import { VIDEO_TYPES } from '@/constants/video'
@@ -30,7 +29,7 @@ const VideosList = ({ data }: IProps) => {
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 w-full'>
             {
                 data.map((video, index) => (
-                    <Card key={index} className='cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-200 md:mr-16 p-1 relative '>
+                    <Card key={index} className='cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-200 md:mr-16 p-1 relative flex flex-col justify-between'>
                         <CardHeader>
                             {video.thumbnail ? video.type === VIDEO_TYPES.YOUTUBE ?
                                 <Image
@@ -44,7 +43,7 @@ const VideosList = ({ data }: IProps) => {
                                 <div className="py-5 rounded-t-md bg-black flex justify-center items-center md:block">
                                     <img
                                         src={video.thumbnail}
-                                        
+
                                         width={300}
                                         height={150}
                                         alt={video.name}
@@ -57,7 +56,7 @@ const VideosList = ({ data }: IProps) => {
                             }
                             <CardTitle className='text-sm text-gray-500 font-semibold'>{ellipsesText(video.name, 35)}</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        {/* <CardContent>
                             <div className="flex items-center justify-center">
                                 {
                                     video?.tl_video_id ? <>
@@ -92,21 +91,10 @@ const VideosList = ({ data }: IProps) => {
 
                                 }
                             </div>
-                        </CardContent>
+                        </CardContent> */}
                         <CardFooter>
                             <Link href={`${APP_ROUTES.REEL_GENERATOR}/${video._id}`} className='w-full'>
-                                <Button className='w-full' loading={{
-                                    isLoading: !video.tl_video_id, customLoader: <ThreeCircles
-                                        visible={true}
-                                        height={25}
-                                        width={25}
-                                        color="white"
-                                        ariaLabel="three-circles-loading"
-                                        wrapperStyle={{}}
-                                        wrapperClass=""
-                                    />
-
-                                }} disabled={!video.tl_video_id}>Open video</Button>
+                                <Button className='w-full' >Open video</Button>
                             </Link>
                         </CardFooter>
                     </Card>

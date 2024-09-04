@@ -2,6 +2,7 @@ import { HTTP_REQUEST } from "@/constants/request";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { IResponse } from "./auth";
+import { IFileUploadResponse } from "../interfaces/app";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,7 +17,7 @@ export const appApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    uploadFile: builder.mutation<IResponse, FormData>({
+    uploadFile: builder.mutation<IFileUploadResponse, FormData>({
       query: (body: FormData) => ({
         url: "/upload",
         method: HTTP_REQUEST.POST,
@@ -29,7 +30,20 @@ export const appApi = createApi({
         method: HTTP_REQUEST.GET,
       }),
     }),
+    getUrlForUpload: builder.mutation<IResponse, string>({
+      query: (filename: string) => ({
+        url: `/url-for-upload`,
+        method: HTTP_REQUEST.POST,
+        body: {
+          filename,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useUploadFileMutation, useGetMediaMutation } = appApi;
+export const {
+  useUploadFileMutation,
+  useGetMediaMutation,
+  useGetUrlForUploadMutation,
+} = appApi;

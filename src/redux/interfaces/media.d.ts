@@ -44,6 +44,8 @@ export interface IExtractVideo {
   id: string; // video ID
   prompt?: string;
   aspect?: number;
+  duration?: number;
+  allow_contextual_merging?: boolean;
 }
 
 export interface IExtractVideoResponse extends IResponse {
@@ -56,11 +58,37 @@ export interface IChapterRequest {
 }
 
 export interface IExtractVideoDataInfo {
-  start: number;
-  end: number;
-  summary: string;
   title: string;
   url: string;
+  start: string;
+  end: string;
+  video_id: string;
+  srt: string;
+  _id: string;
+  segments: [];
+  captionated_url?: string;
+  metadata: { width: number; height: number };
+  thumbnail: string;
+  summary: string;
+}
+
+export interface IGetAllGeneratedShortOfVideoResponse extends IResponse {
+  data: IExtractVideoDataInfo[];
+}
+
+export interface IAddSubtitleResponse extends Response {
+  data: IExtractVideoDataInfo;
+}
+
+export interface IAddSubtitleRequest {
+  style: {
+    bg_color?: string;
+    font_color?: string;
+    font?: string;
+    font_size?: string;
+    position?: "top" | "bottom";
+  };
+  shortId: string;
 }
 
 export interface IChaptersResponse extends IResponse {
@@ -131,6 +159,25 @@ export interface TextToSpeechRequest {
   similarity_boost?: number;
   style?: number;
   use_speaker_boost?: boolean;
+}
+
+export interface SpeechToSpeechRequest {
+  voice_id: string;
+  audio_url: string;
+  output_format?: string;
+  name: string;
+}
+
+export interface GetVoicesChangedListResponse extends IResponse {
+  data: {
+    user_id: string;
+    name: string;
+    voice_id: string;
+    url: string;
+    changed_voice_url: string;
+    created_at: string;
+    updated_at: string;
+  }[];
 }
 
 export interface IGenerateRandomVoiceParamResponse extends IResponse {

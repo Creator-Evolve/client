@@ -3,7 +3,7 @@ export enum APP_ROUTES {
   REEL_GENERATOR = "/reel-generator",
   RESEARCH_WIZARD = "/research",
   VOICE = "/voice",
-  THUMBNAIL = "/thumbnail",
+  YOUTUBE_OPTIMIZER = "/youtube-optimizer",
   SETTING = "/setting",
   SIGNIN = "/auth/login",
   SIGNUP = "/auth/signup",

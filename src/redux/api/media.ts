@@ -22,6 +22,11 @@ import {
   IEnhanceRequest,
   IEnhancedAudiosList,
   IDiagnosedAudioListResponse,
+  IAddSubtitleResponse,
+  IGetAllGeneratedShortOfVideoResponse,
+  IAddSubtitleRequest,
+  SpeechToSpeechRequest,
+  GetVoicesChangedListResponse,
 } from "../interfaces/media";
 
 const URI = `${process.env.NEXT_PUBLIC_API_URL}/media`;
@@ -51,6 +56,8 @@ export const mediaApi = createApi({
     "Voices",
     "Enhances",
     "Diagnose",
+    "LIST_SHORTS",
+    "LiST_VOICE_CHANGED",
   ],
   endpoints: (builder) => ({
     getVideos: builder.query<IResponse, { tl?: boolean }>({
@@ -67,29 +74,21 @@ export const mediaApi = createApi({
       query: (id: string) => `/videos/${id}`,
       providesTags: (result, error, id) => [{ type: "Video", id }],
     }),
-    uploadVideoFile: builder.mutation<
-      IResponse,
-      { body: FormData; invalidate?: boolean }
-    >({
-      query: ({ body }) => ({
+    uploadVideoFile: builder.mutation<IResponse, FormData>({
+      query: (body: FormData) => ({
         url: `/videos/upload`,
         method: HTTP_REQUEST.POST,
         body,
       }),
-      invalidatesTags: (result, error, { invalidate = true }) =>
-        invalidate ? [{ type: "Video", id: "LIST" }] : [],
+      invalidatesTags: [{ type: "Video", id: "LIST" }],
     }),
-    uploadAudioFile: builder.mutation<
-      IResponse,
-      { body: FormData; invalidate?: boolean }
-    >({
-      query: ({ body }) => ({
+    uploadAudioFile: builder.mutation<IResponse, FormData>({
+      query: (body: FormData) => ({
         url: `/audios/upload`,
         method: HTTP_REQUEST.POST,
         body,
       }),
-      invalidatesTags: (result, error, { invalidate = true }) =>
-        invalidate ? [{ type: "Video", id: "LIST" }] : [],
+      invalidatesTags: [{ type: "Audio", id: "LIST" }],
     }),
     uploadVideoUrl: builder.mutation<IResponse, IUploadYTVideo>({
       query: (body: IUploadYTVideo) => ({
@@ -121,13 +120,50 @@ export const mediaApi = createApi({
     }),
     extractShortContent: builder.mutation<IExtractVideoResponse, IExtractVideo>(
       {
-        query: ({ id, aspect, prompt }: IExtractVideo) => ({
+        query: ({
+          id,
+          aspect,
+          prompt,
+          duration,
+          allow_contextual_merging,
+        }: IExtractVideo) => ({
           url: `/videos/extract/${id}?prompt=${prompt}&aspect=${aspect}`,
-          method: HTTP_REQUEST.GET,
+          method: HTTP_REQUEST.POST,
+          body: {
+            aspect,
+            duration,
+            prompt,
+            allow_contextual_merging,
+          },
         }),
-        invalidatesTags: (result, error, { id }) => [{ type: "Video", id }],
+        invalidatesTags: (result, error, { id }) => [
+          { type: "Video", id },
+          { type: "LIST_SHORTS", id },
+        ],
       }
     ),
+    getAllGeneratedShortOfVideo: builder.query<
+      IGetAllGeneratedShortOfVideoResponse,
+      string
+    >({
+      query: (videoId: string) => ({
+        url: `/videos/${videoId}/shorts`,
+      }),
+      providesTags: ["LIST_SHORTS"],
+    }),
+    addSubtitleToShort: builder.mutation<
+      IAddSubtitleResponse,
+      IAddSubtitleRequest
+    >({
+      query: (body: IAddSubtitleRequest) => ({
+        url: `/videos/add-subtitle/${body.shortId}`,
+        body: {
+          ...body.style,
+        },
+        method: HTTP_REQUEST.POST,
+      }),
+      invalidatesTags: ["LIST_SHORTS"],
+    }),
     generateChapters: builder.mutation<IChaptersResponse, IChapterRequest>({
       query: ({ id, prompt }: IChapterRequest) => ({
         url: `/videos/tl/generate/chapters/${id}?prompt=${prompt}`,
@@ -193,6 +229,18 @@ export const mediaApi = createApi({
         method: HTTP_REQUEST.POST,
         body,
       }),
+    }),
+    speechToSpeech: builder.mutation<IResponse, SpeechToSpeechRequest>({
+      query: (body: SpeechToSpeechRequest) => ({
+        url: `/audios/speech-to-speech`,
+        method: HTTP_REQUEST.POST,
+        body,
+      }),
+      invalidatesTags: ["LiST_VOICE_CHANGED"],
+    }),
+    getVoicesChangedList: builder.query<GetVoicesChangedListResponse, void>({
+      query: () => `/audios/voice-changed/list`,
+      providesTags: ["LiST_VOICE_CHANGED"],
     }),
     instantVoiceClone: builder.mutation<IResponse, InstantVoiceCloneRequest>({
       query: (body: InstantVoiceCloneRequest) => ({
@@ -335,6 +383,9 @@ export const {
   useGetVideoByIdQuery,
   useGetAudiosQuery,
   useExtractShortContentMutation,
+  useGetAllGeneratedShortOfVideoQuery,
+  useAddSubtitleToShortMutation,
+  useGetVoicesChangedListQuery,
   useGenerateChaptersMutation,
   useUploadVideoFileMutation,
   useUploadVideoUrlMutation,
@@ -347,6 +398,7 @@ export const {
   useAddSharedVoiceInLibraryMutation,
   useLazyGetSharedVoicesListQuery,
   useTextToSpeechMutation,
+  useSpeechToSpeechMutation,
   useInstantVoiceCloneMutation,
   useGetRandonVoiceGenerationParamsQuery,
   useGenerateRandomVoiceMutation,

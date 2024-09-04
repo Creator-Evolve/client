@@ -5,8 +5,6 @@ const Layout = ({ children }: Readonly<{
 }>) => {
     return (
         <div className="md:p-4 flex flex-col">
-            
-
             <>{children}</>
         </div>
     )

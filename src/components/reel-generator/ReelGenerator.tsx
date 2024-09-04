@@ -1,21 +1,21 @@
 "use client"
 
 import React from 'react'
-import { useGetVideosQuery, useUploadVideoFilesToTLMutation, useUploadYTVideoToTLMutation } from '@/redux/api/media'
+import { useGetVideosQuery, useUploadVideoFileMutation, useUploadVideoFilesToTLMutation, useUploadVideoUrlMutation, useUploadYTVideoToTLMutation } from '@/redux/api/media'
 import { useToast } from '../ui/use-toast'
 import VideosList from './VideosList'
 import VideoUploader from '../common/VideoUploader'
 import { IMedia, VIDEO_TYPES } from '@/constants/video'
 
 const ReelGenerator = () => {
-  const { data, refetch } = useGetVideosQuery({tl:true}, {
+  const { data, refetch } = useGetVideosQuery({ tl: true }, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 60000 * 2,
     skipPollingIfUnfocused: true
   });
 
-  const [uploadYTVideoApi, { isLoading: ytVideoApiIsLoading }] = useUploadYTVideoToTLMutation();
-  const [uploadVideoFileApi, { isLoading: videoFileApiIsLoading }] = useUploadVideoFilesToTLMutation();
+  const [uploadYTVideoApi, { isLoading: ytVideoApiIsLoading }] = useUploadVideoUrlMutation();
+  const [uploadVideoFileApi, { isLoading: videoFileApiIsLoading }] = useUploadVideoFileMutation();
 
   const isLoading = ytVideoApiIsLoading || videoFileApiIsLoading;
   const { toast } = useToast();

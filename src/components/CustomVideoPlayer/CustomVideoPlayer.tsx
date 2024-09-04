@@ -45,25 +45,9 @@ const CustomVideoPlayer = ({ url, width }: { url: string, width?: string }) => {
 
     return (
         <div className="relative">
-            <video
-                onDoubleClick={handlePlayPause}
-                ref={videoRef}
-                src={url}
-                className="rounded-lg"
-                width={width ?? 300}
-            />
+            <video  src={url} width={300} controls />
+
             
-            <div className="flex flex-col items-center mt-2">
-                <Slider
-                    value={[progress]}
-                    onValueChange={handleSliderChange}
-                    className="w-full"
-                    defaultValue={[0]}
-                />
-                <Button onClick={handlePlayPause} className="mt-2">
-                    {isPlaying ? <Pause size={20} /> : <CirclePlay size={20} />}
-                </Button>
-            </div>
         </div>
     );
 };

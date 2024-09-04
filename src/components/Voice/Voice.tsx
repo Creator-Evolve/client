@@ -8,6 +8,7 @@ import ListDubs from './ListDubs';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import VoiceClonning from './Clone/Clone';
 import Enhance from './Enhance/Enhance';
+import VoiceChanger from './VoiceChanger';
 
 const Voice = () => {
     const { data: mediaDubs, refetch } = useGetMediaDubsQuery("")
@@ -38,6 +39,7 @@ const Voice = () => {
                         <TabsTrigger className='w-full' value="enhance">Voice Enhancer </TabsTrigger>
                         <TabsTrigger className='w-full' value="dubbing">Voice Dubbing</TabsTrigger>
                         <TabsTrigger className='w-full' value="voiceover">Voice Over</TabsTrigger>
+                        <TabsTrigger className='w-full' value="voicechange">Voice Changer</TabsTrigger>
                     </TabsList>
                     <TabsContent value="dubbing">
                         <VoiceDub refetch={refetch} />
@@ -49,6 +51,10 @@ const Voice = () => {
                     </TabsContent>
                     <TabsContent value='enhance'>
                         <Enhance />
+                    </TabsContent>
+                    <TabsContent value='voicechange'>
+                        <VoiceClonning />
+                        <VoiceChanger />
                     </TabsContent>
                 </Tabs>
             </div>
