@@ -16,6 +16,7 @@ import { mediaApi } from "./api/media";
 import { appApi } from "./api/app";
 import { researchApi } from "./api/research";
 import { imageApi } from "./api/image";
+import { userApi } from "./api/user";
 
 const rootReducer = combineReducers({
   user: userSlice,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   [appApi.reducerPath]: appApi.reducer,
   [researchApi.reducerPath]: researchApi.reducer,
   [imageApi.reducerPath]: imageApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 const persistConfig = {
@@ -34,10 +36,10 @@ const persistConfig = {
     mediaApi.reducerPath,
     appApi.reducerPath,
     researchApi.reducerPath,
-    imageApi.reducerPath
+    imageApi.reducerPath,
+    userApi.reducerPath,
   ],
 };
-
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -56,7 +58,8 @@ export const makeStore = () =>
         .concat(mediaApi.middleware)
         .concat(appApi.middleware)
         .concat(researchApi.middleware)
-        .concat(imageApi.middleware),
+        .concat(imageApi.middleware)
+        .concat(userApi.middleware),
   });
 
 // Infer the type of makeStore

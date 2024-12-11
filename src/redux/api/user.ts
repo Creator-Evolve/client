@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+import { IResponse } from "./auth";
 
 const userUrl = `${process.env.NEXT_PUBLIC_API_URL}/user`;
 
 export const userApi = createApi({
-  reducerPath: "user",
+  reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: userUrl,
     prepareHeaders: (headers, { getState }) => {
@@ -13,7 +14,11 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  endpoints: (builder) => ({}),
+  endpoints: (builder) => ({
+    getUserById: builder.query<IResponse, string>({
+      query: (id) => `/user/${id}`,
+    }),
+  }),
 });
 
-export const {} = userApi;
+export const { useGetUserByIdQuery } = userApi;

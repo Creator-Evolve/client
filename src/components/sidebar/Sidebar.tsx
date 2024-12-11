@@ -20,9 +20,10 @@ import { APP_ROUTES } from "@/constants/routes";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { logOutUser } from "@/redux/slices/user";
+import { logOutUser, setUser } from "@/redux/slices/user";
 import Image from "next/image";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { useGetUserByIdQuery } from "@/redux/api/user";
 
 interface NavItem {
     href: string;
@@ -79,6 +80,7 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
     const { user } = useAppSelector((state) => state.user);
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const { data } = useGetUserByIdQuery(user?._id as string, { skip: !user?._id });
 
     useEffect(() => {
         setTimeout(() => {
@@ -86,7 +88,11 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
         }, 3000)
     }, [])
 
-    if (pathname.startsWith("/auth")) return children;
+    useEffect(() => {
+        if (data?.data) {
+            dispatch(setUser(data.data))
+        }
+    }, [data, dispatch])
 
     if (!user?._id || !user?.access_token) {
         router.push(APP_ROUTES.SIGNIN);

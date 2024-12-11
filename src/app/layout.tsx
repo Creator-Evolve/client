@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  
+
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -26,9 +26,7 @@ export default function RootLayout({
       </head>
       <body className={manrope.className}>
         <StoreProvider>
-          <SideBar>
-            {children}
-          </SideBar>
+          {children}
         </StoreProvider>
         <Toaster />
       </body>
