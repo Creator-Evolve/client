@@ -7,6 +7,7 @@ export interface IUploadYTVideo {
   thumbnail: string;
   name: string;
   quality?: string;
+  store?: boolean;
 }
 
 export interface IVideoByIdResponse extends IResponse {
@@ -17,6 +18,7 @@ export interface IVideoByIdResponse extends IResponse {
     tl_video_id: string;
     type: string;
     updated_at: string;
+    youtube_download_url: string;
     url: string;
     user_id: string;
     thumbnail: string;

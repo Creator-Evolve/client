@@ -3,7 +3,6 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvide";
 import { Toaster } from "@/components/ui/toaster";
-import SideBar from "@/components/sidebar/Sidebar";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -14,11 +13,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  
+
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <head>
@@ -26,9 +24,7 @@ export default function RootLayout({
       </head>
       <body className={manrope.className}>
         <StoreProvider>
-          <SideBar>
-            {children}
-          </SideBar>
+          {children}
         </StoreProvider>
         <Toaster />
       </body>

@@ -43,7 +43,7 @@ const Enhance = () => {
         }
     };
 
-    useSSE(`media/audios/enhance/events/${user._id}`, handleSSEMessage)
+    useSSE(`media/audios/enhance/events/${user.id}`, handleSSEMessage)
 
     const handleTabChange = useCallback((value: string) => {
         const params = new URLSearchParams(searchParams);

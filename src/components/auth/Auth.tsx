@@ -45,12 +45,13 @@ const Auth = ({ isLogin = false, onSuccessfulSignup }: IAuthProp) => {
     const isLoading = isLoginLoading || isSignUpLoading;
 
     useEffect(() => {
-        if (user?._id || user?.access_token) router.push("/")
+        if (user?.id || user?.access_token) router.push("/")
     }, [user])
 
     const onLoginSubmit: SubmitHandler<IFormInput> = async (data) => {
         try {
             const res = await loginUserApi({ email: data.email, password: data.password }).unwrap();
+            console.log({ res })
             dispatch(setUser(res?.data));
             router.push('/');
         } catch (error: any) {

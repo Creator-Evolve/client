@@ -74,7 +74,7 @@ const AnalyzedAudioList: React.FC<IProps> = ({ handleTabChange }) => {
         }
     };
 
-    useSSE(`media/audios/diagnose/events/${user._id}`, handleSSEMessage)
+    useSSE(`media/audios/diagnose/events/${user.id}`, handleSSEMessage)
 
     if (!diagnosedAudioList) return null
 

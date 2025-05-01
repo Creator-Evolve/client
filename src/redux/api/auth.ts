@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const authUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
-export interface IResponse {
+export interface IResponse<T = any> {
   message: string;
-  data: any;
+  data: T;
   success: boolean;
 }
 

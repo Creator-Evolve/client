@@ -92,7 +92,7 @@ export const mediaApi = createApi({
     }),
     uploadVideoUrl: builder.mutation<IResponse, IUploadYTVideo>({
       query: (body: IUploadYTVideo) => ({
-        url: `/videos/upload/url?quality=${body.quality ?? "high"}`,
+        url: `/videos/upload/url?store=${body.store}`,
         method: HTTP_REQUEST.POST,
         body: {
           url: body.url,

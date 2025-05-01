@@ -79,25 +79,18 @@ const SideBar: React.FC<SideBarProps> = ({ children }) => {
     const { user } = useAppSelector((state) => state.user);
     const router = useRouter();
     const dispatch = useAppDispatch();
-
+    
     useEffect(() => {
         setTimeout(() => {
             setCollapsed(true)
         }, 3000)
     }, [])
 
-    if (pathname.startsWith("/auth")) return children;
-
-    if (!user?._id || !user?.access_token) {
-        router.push(APP_ROUTES.SIGNIN);
-        return;
-    }
 
     const logOut = () => {
         dispatch(logOutUser());
         router.push(APP_ROUTES.SIGNIN);
     };
-
 
     return (
         <div className="flex min-h-screen">

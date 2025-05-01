@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Input } from "@/components/ui/input";
 import { CircleX, Link2 } from 'lucide-react';
@@ -16,15 +16,20 @@ import { getYouTubeVideoId } from '@/lib/utils';
 
 const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
-const DefaultVideoState = { type: VIDEO_TYPES.YOUTUBE, data: "", thumbnail: null, title: null, media_type: null };
+export const DefaultVideoState = { type: VIDEO_TYPES.YOUTUBE, data: "", thumbnail: null, title: null, media_type: null };
 
 interface VideoUploaderProps {
   onUpload: (video: IMedia) => Promise<void>;
   isLoading: boolean;
   acceptAudio?: boolean
+  customUpload?: boolean
+  hide?: {
+    header?: boolean
+    fileInfoMsg?: boolean
+  }
 }
 
-const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acceptAudio = false }) => {
+const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acceptAudio = false, hide, customUpload = false }) => {
   const [media, setMedia] = useState<IMedia>(DefaultVideoState);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -63,6 +68,12 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acce
     }
   };
 
+  useEffect(() => {
+    if (media.data && customUpload) {
+      onUpload(media)
+    }
+  }, [media])
+
   const handleFileChange = (files: any) => {
     const file = files[0];
 
@@ -93,7 +104,11 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acce
   return (
 
     <div className="bg-slate-100 dark:bg-black w-full bg-opacity-50 p-6 border-1 rounded-md border-black border-opacity-5">
-      <h1 className="md:text-2xl text-xl font-bold text-primary">Upload Videos {acceptAudio ? "/ Audios" : ""}</h1>
+      {
+        !hide?.header &&
+        <h1 className="md:text-2xl text-xl font-bold text-primary">Upload Videos {acceptAudio ? "/ Audios" : ""}</h1>
+      }
+
       <div className="mt-4">
         <h4 className="text-sm font-semibold text-gray-500">Upload video by URL</h4>
         <div className="mt-2 mb-5">
@@ -107,7 +122,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acce
         </div>
 
         {!media.data ? (
-          <DropZone onHandleChange={handleFileChange} acceptAudio={acceptAudio} />
+          <DropZone onHandleChange={handleFileChange} acceptAudio={acceptAudio} hideFileInfoMsg={hide?.fileInfoMsg} />
         ) : (
           <div className="flex flex-col justify-start">
             <h4 className="text-sm font-medium mb-2">Video details</h4>
@@ -126,7 +141,7 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acce
                   /> :
                   <div className="flex justify-center items-center py-4 px-7 rounded-md mr-4 bg-white">
                     {
-                      media.media_type==="video" ?
+                      media.media_type === "video" ?
                         <ImageIcon size={25} /> : <MdAudiotrack size={25} />
                     }
                   </div>
@@ -151,9 +166,12 @@ const VideoUploader: React.FC<VideoUploaderProps> = ({ onUpload, isLoading, acce
               </Button>
             </>
           )}
-          <Button onClick={handleUploadClick} disabled={!media.data || isLoading} className='w-36' loading={{ isLoading, width: 30, height: 30 }}>
-            Upload
-          </Button>
+          {
+            !customUpload &&
+            <Button onClick={handleUploadClick} disabled={!media.data || isLoading} className='w-36' loading={{ isLoading, width: 30, height: 30 }}>
+              Upload
+            </Button>
+          }
         </div>
       </div>
     </div>

@@ -8,10 +8,32 @@ import { FaYoutube } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import Credit from "@/components/Credit/Credit";
 
-const Setting = () => {
+
+const tabs = [
+    {
+        id: 0,
+        name: "Profile",
+        key: "profile"
+    },
+    {
+        id: 1,
+        name: "Credits",
+        key: "credits"
+    }
+]
+
+interface IProps {
+    tab?: string
+}
+
+const Setting: React.FC<IProps> = ({ tab }) => {
     const { user } = useAppSelector(state => state.user);
     const router = useRouter();
+
+    const [selectedTabs, setSelectedTabs] = useState<typeof tabs[0]>(tabs[0]);
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -23,6 +45,14 @@ const Setting = () => {
 
     const watchedValues = watch();
 
+    useEffect(() => {
+        if (tab && tab === "credits") {
+            setSelectedTabs(tabs[1])
+        } else {
+            setSelectedTabs(tabs[0])
+        }
+    }, [])
+
     const isInputChanged = () => {
         return watchedValues.name !== user.name || watchedValues.email !== user.email;
     };
@@ -31,38 +61,53 @@ const Setting = () => {
         // Handle form submission
     };
 
+    const renderTabContent = () => {
+        switch (selectedTabs.key) {
+            case "profile":
+                return (
+                    <form onSubmit={handleSubmit(onSubmit)} className="p-4 mt-0">
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="name">Name</Label>
+                            <Input type="text" {...register("name", { required: true })} id="name" placeholder="Name" />
+                            {errors.name && <span className="text-red-500">This field is required</span>}
+                        </div>
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="email">Email</Label>
+                            <Input type="email" id="email" {...register("email")} disabled placeholder="Email" />
+                        </div>
+
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="phone">Phone</Label>
+                            <Input type="number" id="phone" {...register("phone")} placeholder="Phone" />
+                        </div>
+
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="link">Link</Label>
+                            <div className="flex">
+                                <FcGoogle size={30} onClick={() => !user.is_google_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`)} className={`mr-3 cursor-pointer ${user.is_google_authenticated ? "opacity-60" : ""}`} />
+                                <FaYoutube size={30} onClick={() => !user.is_youtube_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/youtube`)} className={`mr-3 cursor-pointer ${user.is_youtube_authenticated ? "opacity-60" : ""}`} color="#FF0000" />
+                            </div>
+                        </div>
+
+                        <Button type="submit" className="w-24 mt-4" disabled={!isInputChanged()}>Save</Button>
+                    </form>
+                )
+            case "credits":
+                return <Credit />
+        }
+    }
+
     return (
         <div className="flex min-h-screen w-full flex-col">
             <div className="flex justify-start border-b-2 border-gray-300">
-                <div className="text-red-500 font-medium border-red-500 border-b-2 p-2" style={{ marginBottom: "-1px" }}>Profile</div>
+                {
+                    tabs.map(tab => (
+                        <div key={tab.id} onClick={() => setSelectedTabs(tab)} style={{ marginBottom: "-1px" }} className={`cursor-pointer p-2 mr-3 ${selectedTabs.id === tab.id ? "text-red-500 font-medium border-red-500 border-b-2" : ""}`}>{tab.name}</div>
+                    ))
+                }
+
             </div>
-
-            <form onSubmit={handleSubmit(onSubmit)} className="p-4 mt-6">
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="name">Name</Label>
-                    <Input type="text" {...register("name", { required: true })} id="name" placeholder="Name" />
-                    {errors.name && <span className="text-red-500">This field is required</span>}
-                </div>
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="email">Email</Label>
-                    <Input type="email" id="email" {...register("email")} disabled placeholder="Email" />
-                </div>
-
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input type="number" id="phone" {...register("phone")} placeholder="Phone" />
-                </div>
-
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="link">Link</Label>
-                    <div className="flex">
-                        <FcGoogle size={30} onClick={() => !user.is_google_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`)} className={`mr-3 cursor-pointer ${user.is_google_authenticated ? "opacity-60" : ""}`} />
-                        <FaYoutube size={30} onClick={() => !user.is_youtube_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/youtube`)} className={`mr-3 cursor-pointer ${user.is_youtube_authenticated ? "opacity-60" : ""}`} color="#FF0000" />
-                    </div>
-                </div>
-
-                <Button type="submit" className="w-24 mt-4" disabled={!isInputChanged()}>Save</Button>
-            </form>
+            {renderTabContent()}
         </div>
     );
 }
