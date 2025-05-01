@@ -128,7 +128,7 @@ const Credit = () => {
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold">Confirm Your Purchase</DialogTitle>
                         <DialogDescription className=" mt-2">
-                            You're about to purchase the following package:
+                            You&apos;re about to purchase the following package:
                         </DialogDescription>
                     </DialogHeader>
                     <div className="py-4">

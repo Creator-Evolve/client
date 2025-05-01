@@ -18,7 +18,7 @@ const ListEditedImages: React.FC<IProps> = ({ data, changeImage, title }) => {
         <div className='mt-5'>
             <h1 className="text-lg font-bold">Edited images</h1>
             <div className="flex mt-3 gap-5 justify-between flex-wrap">
-                {data.map(image => <div className="relative ">
+                {data.map((image, index) => <div className="relative " key={index}>
                     <div className="w-[400px] h-[231px] relative">
                         <NextImage src={image.url} layout='fill' objectFit='contain' alt="Image" className='rounded' />
                     </div>

@@ -10,5 +10,5 @@ type TooltipTriggerContextType = {
 
 export const TooltipTriggerContext = createContext<TooltipTriggerContextType>({
     open: false,
-    setOpen: () => { }, // eslint-disable-line @typescript-eslint/no-empty-function
+    setOpen: () => { },
 });

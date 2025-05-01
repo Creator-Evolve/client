@@ -74,7 +74,7 @@ const Subtitle = () => {
         <div>
             <h1 className="md:text-3xl text-2xl font-bold text-primary">Subtitle Generator</h1>
             <p className="text-gray-500 text-sm font-medium">
-                Elevate your video content with professional subtitles that captivate and inform. Whether you're aiming for accessibility or multilingual reach, our Subtitle Generator offers customizable templates and styling options to perfectly match your brand. Easily add polished subtitles to your videos or download them for future projects.
+                Elevate your video content with professional subtitles that captivate and inform. Whether you&apos;re aiming for accessibility or multilingual reach, our Subtitle Generator offers customizable templates and styling options to perfectly match your brand. Easily add polished subtitles to your videos or download them for future projects.
             </p>
 
 
