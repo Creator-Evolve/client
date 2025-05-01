@@ -335,7 +335,7 @@ const AnalyzedAudioList: React.FC<IProps> = ({ handleTabChange }) => {
                                                                             </div>
                                                                             <div className="w-full p-2" >
                                                                                 <div className="flex items-center justify-start">
-                                                                                    <h2 className='font-semibold text-sm mr-4'>Where do you want to upload your video/audio? based on that we'll provide you the ideal loudness value</h2>
+                                                                                    <h2 className='font-semibold text-sm mr-4'>Where do you want to upload your video/audio? based on that we&apos;ll provide you the ideal loudness value</h2>
 
                                                                                     <div className="w-52">
                                                                                         <Select onValueChange={(val: string) => onPlatformValueChangeHandler(data.id, val)}>

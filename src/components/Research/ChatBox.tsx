@@ -73,7 +73,6 @@ const processQAData = (data: IChatMessage[]) => {
 
 const MarkdownRenderer = React.memo(({ content }: { content: string }) => (
     <ReactMarkdown
-        children={content}
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         components={{
@@ -101,8 +100,12 @@ const MarkdownRenderer = React.memo(({ content }: { content: string }) => (
                 );
             }
         }}
-    />
+    >
+        {content}
+    </ReactMarkdown>
 ));
+
+MarkdownRenderer.displayName = 'MarkdownRenderer';
 
 const ChatBox: React.FC<IProps> = ({ id, chat, refetch, setDocumentText, documentText }) => {
     const inputRef = useRef<HTMLInputElement>(null);

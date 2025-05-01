@@ -97,7 +97,7 @@ const ShapeOption: React.FC<IProps> = ({ handleShapeStyle, handleDeleteElement, 
                             <SelectContent className='outline-none border-none'>
                                 {
                                     outlineWidth.map(width => (
-                                        <SelectItem value={width.value.toString()}>{width.label}</SelectItem>
+                                        <SelectItem key={width.value} value={width.value.toString()}>{width.label}</SelectItem>
                                     ))
                                 }
 
@@ -130,6 +130,7 @@ const ShapeOption: React.FC<IProps> = ({ handleShapeStyle, handleDeleteElement, 
                 {
                     shapesOption.map(shape => (
                         <div
+                            key={shape.id}
                             className={`flex gap-2 items-center border-2 rounded-lg p-2 w-32 cursor-pointer justify-center border-gray-600 transition-colors duration-300 ${shape.id === selectedOpt?.id ? "bg-black text-white" : "bg-white text-black"
                                 }`}
                             onClick={() => {

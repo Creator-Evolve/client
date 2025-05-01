@@ -172,7 +172,7 @@ const EnhanceTab: React.FC<EnhanceTabProps> = ({ media, onLibrarySelectHandler, 
         <form className="shadow-lg p-4 rounded" onSubmit={handleSubmit(onSubmit)}>
             <div className="">
                 <h3 className="text-sm text-gray-700 font-semibold">Options</h3>
-                <p className='text-xs text-gray-500'>Select "Enhance" for general improvement or choose multiple settings for specific enhancements.</p>
+                <p className='text-xs text-gray-500'>Select &quot;Enhance&quot; for general improvement or choose multiple settings for specific enhancements.</p>
 
                 <div className="">
                     <div className="flex mt-2 flex-wrap gap-3">

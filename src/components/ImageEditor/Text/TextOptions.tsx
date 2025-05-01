@@ -75,7 +75,7 @@ const TextOptions: React.FC<IProps> = ({
           <SelectContent className='outline-none border-none'>
             {
               fonts.map(font => (
-                <SelectItem value={font.css}>{font.name}</SelectItem>
+                <SelectItem key={font.name} value={font.css}>{font.name}</SelectItem>
               ))
             }
 
@@ -91,7 +91,7 @@ const TextOptions: React.FC<IProps> = ({
           <SelectContent className='outline-none border-none'>
             {
               fontSizes.map(font => (
-                <SelectItem value={font.value}>{font.label}</SelectItem>
+                <SelectItem key={font.value} value={font.value}>{font.label}</SelectItem>
               ))
             }
 

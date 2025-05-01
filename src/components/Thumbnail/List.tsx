@@ -144,7 +144,7 @@ const List: React.FC<IProp> = ({ images, currentPage, totalPage, deleteHandler }
                         <PaginationPrevious href={`?page=${currentPage - 1}`} />
                     </PaginationItem>
                     {Array.from({ length: totalPage }, (_, i) => i).map((val) => (
-                        <PaginationItem>
+                        <PaginationItem key={val}>
                             <PaginationLink href={`?page=${val + 1}`}
                                 isActive={val + 1 === currentPage}
                             >

@@ -41,8 +41,6 @@ const TextEdit: React.FC<IProps> = ({
 
 
 
-    if (!selectedElement || !stageRef.current || !selectedElementId)
-        return null
 
 
     useHotkeys("ctrl+b", () => {
@@ -62,6 +60,10 @@ const TextEdit: React.FC<IProps> = ({
             handleDeleteElement()
         }
     })
+
+    if (!selectedElement || !stageRef.current || !selectedElementId)
+        return null
+
     return (
         <div style={{
             position: 'absolute',
