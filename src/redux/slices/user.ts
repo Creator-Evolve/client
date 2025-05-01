@@ -3,7 +3,7 @@ import type { RootState } from "../store";
 
 export type utilState = {
   user: {
-    _id?: string;
+    id?: string;
     access_token?: string;
     name?: string;
     email?: string;

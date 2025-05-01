@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { IResponse } from "./auth";
 
-const userUrl = `${process.env.NEXT_PUBLIC_API_URL}/user`;
+const userUrl = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -16,7 +16,7 @@ export const userApi = createApi({
   }),
   endpoints: (builder) => ({
     getUserById: builder.query<IResponse, string>({
-      query: (id) => `/user/${id}`,
+      query: (id) => `/${id}`,
     }),
   }),
 });

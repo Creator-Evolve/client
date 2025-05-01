@@ -1,4 +1,4 @@
-import SideBar from "@/components/sidebar/Sidebar";
+import LayoutWithQuery from "./LayoutWithQuery";
 
 export default function RootLayout({
     children,
@@ -8,8 +8,8 @@ export default function RootLayout({
 }>) {
 
     return (
-        <SideBar>
+        <LayoutWithQuery>
             {children}
-        </SideBar>
+        </LayoutWithQuery>
     );
 }

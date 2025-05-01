@@ -8,7 +8,8 @@ import { FaYoutube } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Credit from "@/components/Credit/Credit";
 
 
 const tabs = [
@@ -24,7 +25,11 @@ const tabs = [
     }
 ]
 
-const Setting = () => {
+interface IProps {
+    tab?: string
+}
+
+const Setting: React.FC<IProps> = ({ tab }) => {
     const { user } = useAppSelector(state => state.user);
     const router = useRouter();
 
@@ -40,6 +45,14 @@ const Setting = () => {
 
     const watchedValues = watch();
 
+    useEffect(() => {
+        if (tab && tab === "credits") {
+            setSelectedTabs(tabs[1])
+        } else {
+            setSelectedTabs(tabs[0])
+        }
+    }, [])
+
     const isInputChanged = () => {
         return watchedValues.name !== user.name || watchedValues.email !== user.email;
     };
@@ -48,39 +61,39 @@ const Setting = () => {
         // Handle form submission
     };
 
-    const renderTabContent=()=>{
-        switch(selectedTabs.key){
+    const renderTabContent = () => {
+        switch (selectedTabs.key) {
             case "profile":
                 return (
                     <form onSubmit={handleSubmit(onSubmit)} className="p-4 mt-0">
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="name">Name</Label>
-                    <Input type="text" {...register("name", { required: true })} id="name" placeholder="Name" />
-                    {errors.name && <span className="text-red-500">This field is required</span>}
-                </div>
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="email">Email</Label>
-                    <Input type="email" id="email" {...register("email")} disabled placeholder="Email" />
-                </div>
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="name">Name</Label>
+                            <Input type="text" {...register("name", { required: true })} id="name" placeholder="Name" />
+                            {errors.name && <span className="text-red-500">This field is required</span>}
+                        </div>
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="email">Email</Label>
+                            <Input type="email" id="email" {...register("email")} disabled placeholder="Email" />
+                        </div>
 
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input type="number" id="phone" {...register("phone")} placeholder="Phone" />
-                </div>
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="phone">Phone</Label>
+                            <Input type="number" id="phone" {...register("phone")} placeholder="Phone" />
+                        </div>
 
-                <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
-                    <Label htmlFor="link">Link</Label>
-                    <div className="flex">
-                        <FcGoogle size={30} onClick={() => !user.is_google_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`)} className={`mr-3 cursor-pointer ${user.is_google_authenticated ? "opacity-60" : ""}`} />
-                        <FaYoutube size={30} onClick={() => !user.is_youtube_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/youtube`)} className={`mr-3 cursor-pointer ${user.is_youtube_authenticated ? "opacity-60" : ""}`} color="#FF0000" />
-                    </div>
-                </div>
+                        <div className="grid w-full max-w-sm items-center gap-1.5 mt-4">
+                            <Label htmlFor="link">Link</Label>
+                            <div className="flex">
+                                <FcGoogle size={30} onClick={() => !user.is_google_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`)} className={`mr-3 cursor-pointer ${user.is_google_authenticated ? "opacity-60" : ""}`} />
+                                <FaYoutube size={30} onClick={() => !user.is_youtube_authenticated && router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/youtube`)} className={`mr-3 cursor-pointer ${user.is_youtube_authenticated ? "opacity-60" : ""}`} color="#FF0000" />
+                            </div>
+                        </div>
 
-                <Button type="submit" className="w-24 mt-4" disabled={!isInputChanged()}>Save</Button>
-            </form>
+                        <Button type="submit" className="w-24 mt-4" disabled={!isInputChanged()}>Save</Button>
+                    </form>
                 )
             case "credits":
-                return <h1>Credit Page</h1>
+                return <Credit />
         }
     }
 

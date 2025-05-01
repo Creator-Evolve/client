@@ -3,7 +3,6 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvide";
 import { Toaster } from "@/components/ui/toaster";
-import SideBar from "@/components/sidebar/Sidebar";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -18,7 +17,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <head>

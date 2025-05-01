@@ -79,7 +79,7 @@ const VoiceDub = ({ refetch }: { refetch: () => {} }) => {
         }
     };
 
-    useSSE(`media/audios/dubbing/events/${user._id}`, handleSSEMessage)
+    useSSE(`media/audios/dubbing/events/${user.id}`, handleSSEMessage)
 
     const onFileUploadHandler = async (media: IMedia) => {
         try {
